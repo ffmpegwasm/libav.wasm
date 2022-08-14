@@ -14,7 +14,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - name: Build the Docker image
+    - name: Build libav.wasm
       run: bash build.sh --cache-from=type=gha --cache-to=type=gha
     - uses: actions/upload-artifact@v3
       with:
