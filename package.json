@@ -1,0 +1,25 @@
+{
+  "name": "@ffmpeg/libav",
+  "version": "0.0.1",
+  "description": "libav WebAssembly port",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ffmpegwasm/libav.wasm.git"
+  },
+  "keywords": [
+    "ffmpeg",
+    "libav",
+    "webassembly",
+    "wasm"
+  ],
+  "author": "Jerome Wu <jeromewus@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ffmpegwasm/libav.wasm/issues"
+  },
+  "homepage": "https://github.com/ffmpegwasm/libav.wasm#readme"
+}
