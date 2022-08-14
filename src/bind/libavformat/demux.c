@@ -7,8 +7,8 @@
  * in the JS world.
  */
 EMSCRIPTEN_KEEPALIVE
-int _avformat_open_input(AVFormatContext *ps, const char *filename,
+int _avformat_open_input(AVFormatContext *ps, const char *url,
 		const AVInputFormat *fmt, AVDictionary *options) {
-	return avformat_open_input(&ps, filename, fmt, &options);
+	return avformat_open_input(&ps, url, fmt, &options);
 }
 

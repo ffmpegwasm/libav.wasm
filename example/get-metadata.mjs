@@ -16,10 +16,9 @@ console.time("load-libav");
 const {
   FS,
   NULL,
-  stringToPtr,
   UTF8ToString,
-  __avformat_alloc_context,
-  __avformat_open_input,
+  avformat_alloc_context,
+  avformat_open_input,
   __avformat_context_iformat,
   __avinput_format_name,
   __avformat_context_duration,
@@ -30,8 +29,8 @@ console.timeEnd("load-libav");
 FS.writeFile(basename(fileName), media);
 
 console.time("get-metadata");
-const ctx = __avformat_alloc_context();
-__avformat_open_input(ctx, stringToPtr(fileName), NULL, NULL);
+const ctx = avformat_alloc_context();
+avformat_open_input(ctx, fileName, NULL, NULL);
 const iformat = __avformat_context_iformat(ctx);
 
 console.log(`file name: ${fileName}, size: ${media.length} bytes`);
