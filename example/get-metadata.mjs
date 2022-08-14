@@ -12,6 +12,8 @@ if (!filePath) {
 
 const fileName = basename(filePath);
 const media = Uint8Array.from(readFileSync(filePath));
+
+// load libav module.
 console.time("load-libav");
 const {
   FS,
@@ -26,8 +28,10 @@ const {
 } = await createLibav();
 console.timeEnd("load-libav");
 
+// write file to WASM filesystem.
 FS.writeFile(basename(fileName), media);
 
+// get media meta data using libav functions.
 console.time("get-metadata");
 const ctx = avformat_alloc_context();
 avformat_open_input(ctx, fileName, NULL, NULL);

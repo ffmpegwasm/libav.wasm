@@ -1,8 +1,10 @@
+# Base emsdk image with environment variables.
 FROM emscripten/emsdk:3.1.18 AS emsdk-base
 ENV INSTALL_DIR=/src/build
 ENV CFLAGS="$CFLAGS -O3"
 ENV FFMPEG_VERSION=n5.1
 
+# Build x264
 FROM emsdk-base AS x264-builder
 RUN git clone \
 			--branch stable \
@@ -19,6 +21,7 @@ RUN emconfigure ./configure \
 			--extra-cflags="$CFLAGS"
 RUN emmake make install-lib-static -j
 
+# Base liav image with dependencies and source code populated.
 FROM emsdk-base AS libav-base
 RUN apt-get update && \
 			apt-get install -y pkg-config
@@ -30,6 +33,7 @@ RUN git clone \
 			/src
 COPY --from=x264-builder $INSTALL_DIR $INSTALL_DIR
 
+# Build libav
 FROM libav-base AS libav-builder
 RUN emconfigure ./configure \
   --target-os=none \
@@ -60,6 +64,7 @@ RUN emconfigure ./configure \
 	&& \
 	emmake make -j
 
+# Build libav.wasm
 FROM libav-builder AS libav-wasm-builder
 COPY src /src/wasm
 RUN mkdir -p /src/dist
@@ -90,5 +95,6 @@ RUN emcc \
 	-o dist/libav.js \
 	wasm/bind/**/*.c
 
+# Export libav.wasm to dist/, use `docker buildx build -o . .` to get assets
 FROM scratch AS exportor
 COPY --from=libav-wasm-builder /src/dist /dist

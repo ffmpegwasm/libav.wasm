@@ -4,6 +4,11 @@
 
 libav WebAssembly port.
 
+- [Background](#background)
+- [Get Started](#get-started)
+- [Run](#run)
+- [Configuration](#configuration)
+
 ## Background
 
 libav (incl. libavcodec, libavformat, …) is the library behind FFmpeg to
@@ -13,9 +18,10 @@ libav to WebAssembly to allow users edit video and audio directly inside
 
 ### Why not ffmpeg.wasm?
 
-ffmpeg.wasm ports FFmpeg to WebAssembly using a more coarse-grained approach,
-  it works but also suffers from the isolation of C and JavaScript world which
-  makes it hard to develop and improve.
+ffmpeg.wasm ports FFmpeg to WebAssembly using a more coarse-grained approach
+(you can imagine ffmpeg.wasm as an extremely large function, once it starts to
+ run, there isn't much you can control.), it works but also suffers from the
+isolation of C and JavaScript world which makes it hard to develop and improve.
 
 The ultimate goal of libav.wasm is to enable a ffmpeg.wasm with better developer
  experience (DX) and potentially be the foundation to fix issues like performance
@@ -26,7 +32,7 @@ The ultimate goal of libav.wasm is to enable a ffmpeg.wasm with better developer
 We use docker to achieve a (hopefully) reproducible build paradigm, so it is
 required to install docker 19.03 or above before you run any build script.
 
-- Build liba.wasm
+- Build libav.wasm
 
 ```bash
 bash build.sh
@@ -39,7 +45,9 @@ If nothing went wrong, you should find libav assets in **dist/**.
 A few examples can be found in **example/**, feel free to try and see how
 it works in action.
 
-## Library Versions
+## Configuration
+
+libav.wasm is built using tools/libraries with version:
 
 | Name  | Version |
 | ----- | ------- |

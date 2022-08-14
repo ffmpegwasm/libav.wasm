@@ -7,11 +7,15 @@ const stringToPtr = function (str) {
   return ptr;
 };
 
-Module["NULL"] = 0;
-Module["stringToPtr"] = stringToPtr;
-Module["avformat_alloc_context"] = function() {
+const avformat_alloc_context = function() {
 	return Module["__avformat_alloc_context"]();
 };
-Module["avformat_open_input"] = function(ps, url, fmt, options) {
+
+const avformat_open_input = function(ps, url, fmt, options) {
 	return Module["__avformat_open_input"](ps, stringToPtr(url), fmt, options);
 };
+
+Module["NULL"] = 0;
+Module["stringToPtr"] = stringToPtr;
+Module["avformat_alloc_context"] = avformat_alloc_context;
+Module["avformat_open_input"] = avformat_open_input;
