@@ -17,7 +17,7 @@ const {
   FS,
   NULL,
   stringToPtr,
-  AsciiToString,
+  UTF8ToString,
   __avformat_alloc_context,
   __avformat_open_input,
   __avformat_context_iformat,
@@ -35,7 +35,7 @@ __avformat_open_input(ctx, stringToPtr(fileName), NULL, NULL);
 const iformat = __avformat_context_iformat(ctx);
 
 console.log(`file name: ${fileName}, size: ${media.length} bytes`);
-console.log(`format: ${AsciiToString(__avinput_format_name(iformat))}`);
+console.log(`format: ${UTF8ToString(__avinput_format_name(iformat))}`);
 console.log(`duration: ${__avformat_context_duration(ctx)}`);
 console.log(`bit rate: ${__avformat_context_bit_rate(ctx)}`);
 console.timeEnd("get-metadata");

@@ -1,6 +1,6 @@
 # libav.wasm
 
-> libav.wasm is still under development and far from production use.
+> libav.wasm is still in early stage and far from production use.
 
 libav WebAssembly port.
 

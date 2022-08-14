@@ -85,7 +85,7 @@ RUN emcc \
 	-lswscale \
 	-lx264 \
   -s MODULARIZE \
-	-s EXPORTED_RUNTIME_METHODS=FS,setValue,writeAsciiToMemory,AsciiToString \
+	-s EXPORTED_RUNTIME_METHODS=FS,setValue,UTF8ToString,lengthBytesUTF8,stringToUTF8 \
 	--pre-js wasm/bind/util.js \
 	-o dist/libav.js \
 	wasm/bind/**/*.c
