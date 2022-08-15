@@ -66,7 +66,7 @@ RUN emconfigure ./configure \
 
 # Build libav.wasm
 FROM libav-builder AS libav-wasm-builder
-COPY src /src/wasm
+COPY src /src/src
 RUN mkdir -p /src/dist
 RUN emcc \
   -I. \
@@ -91,9 +91,9 @@ RUN emcc \
 	-lx264 \
   -s MODULARIZE \
 	-s EXPORTED_RUNTIME_METHODS=FS,setValue,UTF8ToString,lengthBytesUTF8,stringToUTF8 \
-	--pre-js wasm/bind/bind.js \
+	--pre-js src/bind/bind.js \
 	-o dist/libav.js \
-	wasm/bind/**/*.c
+	src/bind/**/*.c
 
 # Export libav.wasm to dist/, use `docker buildx build -o . .` to get assets
 FROM scratch AS exportor
