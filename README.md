@@ -1,5 +1,7 @@
 # libav.wasm
 
+[![Build libav.wasm](https://github.com/ffmpegwasm/libav.wasm/actions/workflows/build-libav-wasm.yml/badge.svg)](https://github.com/ffmpegwasm/libav.wasm/actions/workflows/build-libav-wasm.yml)
+
 > libav.wasm is still in early stage and far from production use.
 
 libav WebAssembly port.
@@ -29,13 +31,17 @@ The ultimate goal of libav.wasm is to enable a ffmpeg.wasm with better developer
 
 ## Get Started
 
-We use docker to achieve a (hopefully) reproducible build paradigm, so it is
+We use docker to achieve a (hopefully) cached and reproducible build, so it is
 required to install docker 19.03 or above before you run any build script.
 
 - Build libav.wasm
 
 ```bash
-bash build.sh
+# default build
+$ bash build.sh
+
+# build with details
+$ bash build.sh --progress plain
 ```
 
 If nothing went wrong, you should find libav assets in **dist/**.
@@ -52,5 +58,5 @@ libav.wasm is built using tools/libraries with version:
 | Name  | Version |
 | ----- | ------- |
 | emsdk | 3.1.18  |
-| FFmpeg | 5.1  |
+| FFmpeg | n5.1  |
 | x264 | 0.160.x  |
