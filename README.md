@@ -1,6 +1,7 @@
 # libav.wasm
 
 [![Build libav.wasm](https://github.com/ffmpegwasm/libav.wasm/actions/workflows/build-libav-wasm.yml/badge.svg)](https://github.com/ffmpegwasm/libav.wasm/actions/workflows/build-libav-wasm.yml)
+![Discord Shield](https://discordapp.com/api/guilds/1008623508672233502/widget.png?style=shield)
 
 > libav.wasm is still in early stage and far from production use.
 
