@@ -24,7 +24,7 @@ jobs:
         path: build-cache
         key: build-cache
     - name: Build libav.wasm
-      run: bash build.sh --cache-from=type=local,dest=build-cache --cache-to=type=local,dest=build-cache
+      run: bash build.sh --cache-from=type=local,src=build-cache --cache-to=type=local,dest=build-cache
     - uses: actions/upload-artifact@v3
       with:
         name: libav.wasm
