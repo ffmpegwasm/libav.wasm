@@ -22,7 +22,7 @@ jobs:
       uses: actions/cache@v3
       with:
         path: build-cache
-        key: build-cache
+        key: build-cache-${{ hashFiles('Dockerfile*') }}
     - name: Build libav.wasm
       run: bash build.sh --cache-from=type=local,src=build-cache --cache-to=type=local,dest=build-cache,mode=max
     - uses: actions/upload-artifact@v3
