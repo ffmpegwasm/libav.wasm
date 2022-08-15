@@ -1,7 +1,7 @@
 # libav.wasm
 
-[![Build libav.wasm](https://github.com/ffmpegwasm/libav.wasm/actions/workflows/build-libav-wasm.yml/badge.svg)](https://github.com/ffmpegwasm/libav.wasm/actions/workflows/build-libav-wasm.yml)
 [![](https://dcbadge.vercel.app/api/server/Y7k6NJ3bFc?style=flat)](https://discord.gg/Y7k6NJ3bFc)
+[![Build libav.wasm](https://github.com/ffmpegwasm/libav.wasm/actions/workflows/build-libav-wasm.yml/badge.svg)](https://github.com/ffmpegwasm/libav.wasm/actions/workflows/build-libav-wasm.yml)
 
 libav WebAssembly port.
 
