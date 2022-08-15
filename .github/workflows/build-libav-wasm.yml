@@ -14,8 +14,14 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+    - name: Cache build
+      id: cache-build
+      uses: actions/cache@v3
+      with:
+        path: build-cache
+        key: build-cache
     - name: Build libav.wasm
-      run: bash build.sh --cache-from=type=gha --cache-to=type=gha
+      run: bash build.sh --cache-from=type=local,dest=build-cache --cache-to=type=local,dest=build-cache
     - uses: actions/upload-artifact@v3
       with:
         name: libav.wasm
