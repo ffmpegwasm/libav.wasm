@@ -1,4 +1,4 @@
-import createLibav from "../dist/libav.js";
+import { createLibav } from "../src/index.js";
 import { readFileSync } from "node:fs";
 import { basename } from "node:path";
 import { argv, exit } from "node:process";
@@ -15,17 +15,8 @@ const media = Uint8Array.from(readFileSync(filePath));
 
 // load libav module.
 console.time("load-libav");
-const {
-  FS,
-  NULL,
-  UTF8ToString,
-  avformat_alloc_context,
-  avformat_open_input,
-  __avformat_context_iformat,
-  __avinput_format_name,
-  __avformat_context_duration,
-  __avformat_context_bit_rate,
-} = await createLibav();
+const { FS, NULL, avformat_alloc_context, avformat_open_input } =
+  await createLibav();
 console.timeEnd("load-libav");
 
 // write file to WASM filesystem.
@@ -35,10 +26,9 @@ FS.writeFile(basename(fileName), media);
 console.time("get-metadata");
 const ctx = avformat_alloc_context();
 avformat_open_input(ctx, fileName, NULL, NULL);
-const iformat = __avformat_context_iformat(ctx);
 
 console.log(`file name: ${fileName}, size: ${media.length} bytes`);
-console.log(`format: ${UTF8ToString(__avinput_format_name(iformat))}`);
-console.log(`duration: ${__avformat_context_duration(ctx)}`);
-console.log(`bit rate: ${__avformat_context_bit_rate(ctx)}`);
+console.log(`format: ${ctx.iformat.name}`);
+console.log(`duration: ${ctx.duration}`);
+console.log(`bit rate: ${ctx.bit_rate}`);
 console.timeEnd("get-metadata");
