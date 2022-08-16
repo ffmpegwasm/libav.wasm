@@ -1,11 +1,11 @@
 # example
 
-- get-metadata.js
+- metadata.js
 
 Get media metadata.
 
 ```bash
-$ node get-metadata.js <FILE_PATH>
+$ node metadata.js <FILE_PATH>
 # example:
-#   node get-metadata.js ../testdata/video-1s.mp4
+#   node metadata.js ../testdata/video-1s.mp4
 ```

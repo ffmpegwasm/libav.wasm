@@ -14,6 +14,11 @@ class AVFormatContext {
     this.ptr = ptr;
   }
 
+  get url() {
+    const { UTF8ToString, __avformat_context_url } = Module;
+    return UTF8ToString(__avformat_context_url(this.ptr));
+  }
+
   get iformat() {
     return new AVInputFormat(Module["__avformat_context_iformat"](this.ptr));
   }
@@ -24,6 +29,14 @@ class AVFormatContext {
 
   get bit_rate() {
     return Module["__avformat_context_bit_rate"](this.ptr);
+  }
+
+  get nb_streams() {
+    return Module["__avformat_context_nb_streams"](this.ptr);
+  }
+
+  nth_stream(i) {
+    return new AVStream(Module["__avformat_context_nth_stream"](this.ptr, i));
   }
 }
 
@@ -38,8 +51,47 @@ class AVInputFormat {
   }
 }
 
+class AVCodec {
+  constructor(ptr) {
+    this.ptr = ptr;
+  }
+}
+
+class AVStream {
+  constructor(ptr) {
+    this.ptr = ptr;
+  }
+
+  get codecpar() {
+    return new AVCodecParameters(Module["__avstream_codecpar"](this.ptr));
+  }
+}
+
+class AVCodecContext {
+  constructor(ptr) {
+    this.ptr = ptr;
+  }
+}
+
+class AVCodecParameters {
+  constructor(ptr) {
+    this.ptr = ptr;
+  }
+
+  get codec_id() {
+    return Module["__avcodec_parameters_codec_id"](this.ptr);
+  }
+
+  get codec_type() {
+    return Module["__avcodec_parameters_codec_type"](this.ptr);
+  }
+}
+
 Module["AVFormatContext"] = AVFormatContext;
 Module["AVInputFormat"] = AVInputFormat;
+Module["AVCodec"] = AVCodec;
+Module["AVStream"] = AVStream;
+Module["AVCodecContext"] = AVCodecContext;
 
 /**
  * Functions
@@ -61,27 +113,10 @@ const ref = function (p) {
   return ptr;
 };
 
-const avformat_alloc_context = function () {
-  return new AVFormatContext(Module["_avformat_alloc_context"]());
-};
-
-const avformat_free_context = function (ctx) {
-  Module["_avformat_free_context"](ctx.ptr);
-};
-
-const avformat_open_input = function (ctx, url, fmt, options) {
-  const { ref, _avformat_open_input } = Module;
-  return _avformat_open_input(
-    ref(ctx.ptr),
-    stringToPtr(url),
-    fmt,
-    ref(options)
-  );
+const deref = function (p) {
+  return getValue(p, "i32");
 };
 
 Module["stringToPtr"] = stringToPtr;
 Module["ref"] = ref;
-
-Module["avformat_alloc_context"] = avformat_alloc_context;
-Module["avformat_free_context"] = avformat_free_context;
-Module["avformat_open_input"] = avformat_open_input;
+Module["deref"] = deref;
