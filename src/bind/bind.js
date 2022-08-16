@@ -3,6 +3,7 @@
  */
 
 Module["NULL"] = 0;
+Module["SIZE_I32"] = Uint32Array.BYTES_PER_ELEMENT;
 
 /**
  * Classes
@@ -53,19 +54,34 @@ const stringToPtr = function (str) {
   return ptr;
 };
 
+const ref = function (p) {
+  const { _malloc, SIZE_I32, setValue } = Module;
+  const ptr = _malloc(SIZE_I32);
+  setValue(ptr, p, "i32");
+  return ptr;
+};
+
 const avformat_alloc_context = function () {
-  return new AVFormatContext(Module["__avformat_alloc_context"]());
+  return new AVFormatContext(Module["_avformat_alloc_context"]());
+};
+
+const avformat_free_context = function (ctx) {
+  Module["_avforamt_free_context"](ctx.ptr);
 };
 
 const avformat_open_input = function (ctx, url, fmt, options) {
-  return Module["__avformat_open_input"](
-    ctx.ptr,
+  const { ref, _avformat_open_input } = Module;
+  return _avformat_open_input(
+    ref(ctx.ptr),
     stringToPtr(url),
     fmt,
-    options
+    ref(options)
   );
 };
 
 Module["stringToPtr"] = stringToPtr;
+Module["ref"] = ref;
+
 Module["avformat_alloc_context"] = avformat_alloc_context;
+Module["avformat_free_context"] = avformat_free_context;
 Module["avformat_open_input"] = avformat_open_input;

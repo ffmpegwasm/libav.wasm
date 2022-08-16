@@ -28,12 +28,3 @@ EMSCRIPTEN_KEEPALIVE
 const char* _avinput_format_name(AVInputFormat *iformat) {
 	return iformat->name;
 }
-
-/**
- * Functions.
- */
-
-EMSCRIPTEN_KEEPALIVE
-void _avformat_free_context(AVFormatContext *s) {
-	avformat_free_context(s);
-}

@@ -90,6 +90,7 @@ RUN emcc \
 	-lswscale \
 	-lx264 \
   -s MODULARIZE \
+	-s EXPORTED_FUNCTIONS=$(node src/bind/export.js) \
 	-s EXPORTED_RUNTIME_METHODS=FS,setValue,UTF8ToString,lengthBytesUTF8,stringToUTF8 \
 	--pre-js src/bind/bind.js \
 	-o dist/libav.js \
