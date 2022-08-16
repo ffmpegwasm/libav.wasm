@@ -66,7 +66,7 @@ const avformat_alloc_context = function () {
 };
 
 const avformat_free_context = function (ctx) {
-  Module["_avforamt_free_context"](ctx.ptr);
+  Module["_avformat_free_context"](ctx.ptr);
 };
 
 const avformat_open_input = function (ctx, url, fmt, options) {

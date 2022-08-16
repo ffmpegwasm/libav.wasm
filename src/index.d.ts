@@ -19,6 +19,7 @@ export interface AVFormatContext {
 
 export interface FS {
   writeFile(path: string, data: Uint8Array | string): void;
+  unlink(path: string): void;
 }
 
 export interface Libav {
@@ -26,6 +27,7 @@ export interface Libav {
   NULL: number;
   stringToPtr: PtrString;
   avformat_alloc_context(): AVFormatContext;
+  avformat_free_context(ctx: AVFormatContext): void;
   avformat_open_input(
     ctx: AVFormatContext,
     url: string,
