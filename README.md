@@ -9,7 +9,7 @@ libav WebAssembly port.
 
 - [Background](#background)
 - [Get Started](#get-started)
-- [Run](#run)
+- [Try it!](#try-it)
 - [Configuration](#configuration)
 
 ## Background
@@ -47,10 +47,25 @@ $ bash build.sh --progress plain
 
 If nothing went wrong, you should find libav assets in **dist/**.
 
-## Run
+## Try it
 
 A few examples can be found in **example/**, feel free to try and see how
 it works in action.
+
+> As these examples use video files in testdata/, you need to do a 
+`git submodule update --init` first
+
+- metadata: use libav.wasm to extra video metadata
+
+```
+make run-metadata
+```
+
+- transcode: use libav.wasm to transcode mp4 to a gop fixed mp4
+
+```
+make run-transcode
+```
 
 ## Configuration
 
