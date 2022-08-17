@@ -33,7 +33,7 @@ writeFile(fileName, media);
 
 // get media meta data using libav functions.
 console.time("get-metadata");
-let ctx = new AVFormatContext(_avformat_alloc_context());
+const ctx = new AVFormatContext(_avformat_alloc_context());
 const ptr = ref(ctx.ptr);
 _avformat_open_input(ptr, stringToPtr(fileName), NULL, NULL);
 ctx.ptr = deref(ptr);

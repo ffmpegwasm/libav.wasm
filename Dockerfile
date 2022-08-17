@@ -3,6 +3,8 @@ FROM emscripten/emsdk:3.1.18 AS emsdk-base
 ENV INSTALL_DIR=/src/build
 ENV CFLAGS="$CFLAGS -O3"
 ENV FFMPEG_VERSION=n5.1
+ENV EM_PKG_CONFIG_PATH=$EM_PKG_CONFIG_PATH:$INSTALL_DIR/lib/pkgconfig:/emsdk/upstream/emscripten/system/lib/pkgconfig
+ENV PKG_CONFIG_PATH=$PKG_CONFIG_PATH:$EM_PKG_CONFIG_PATH
 
 # Build x264
 FROM emsdk-base AS x264-builder
@@ -46,7 +48,7 @@ RUN emconfigure ./configure \
   --disable-doc \
   --disable-debug \
   --disable-runtime-cpudetect \
-  --disable-autodetect \
+	--disable-autodetect \
 	--disable-pthreads \
 	--disable-w32threads \
 	--disable-os2threads \
@@ -89,9 +91,10 @@ RUN emcc \
 	-lswresample \
 	-lswscale \
 	-lx264 \
-  -s MODULARIZE \
-	-s EXPORTED_FUNCTIONS=$(node src/bind/export.js) \
-	-s EXPORTED_RUNTIME_METHODS=FS,setValue,getValue,UTF8ToString,lengthBytesUTF8,stringToUTF8 \
+  -sMODULARIZE \
+	-sALLOW_MEMORY_GROWTH \
+	-sEXPORTED_FUNCTIONS=$(node src/bind/export.js) \
+	-sEXPORTED_RUNTIME_METHODS=FS,setValue,getValue,UTF8ToString,lengthBytesUTF8,stringToUTF8 \
 	--pre-js src/bind/bind.js \
 	-o dist/libav.js \
 	src/bind/**/*.c
