@@ -159,6 +159,18 @@ class AVCodecContext extends Base {
   set time_base(tb) {
     Module["__avcodec_context_set_time_base"](this.ptr, tb.ptr);
   }
+
+  set channels(channels) {
+    Module["__avcodec_context_set_channels"](this.ptr, channels);
+  }
+
+  set channel_layout(cl) {
+    Module["__avcodec_context_set_channel_layout"](this.ptr, cl);
+  }
+
+  set sample_fmt(sf) {
+    Module["__avcodec_context_set_sample_fmt"](this.ptr, sf);
+  }
 }
 
 class AVCodecParameters extends Base {
@@ -260,4 +272,6 @@ Module["onRuntimeInitialized"] = function () {
   Module["AVERROR_EOF"] = Module["__averror_eof"]();
   Module["AVERROR_EAGAIN"] = Module["__averror_eagain"]();
   Module["AV_PICTURE_TYPE_NONE"] = Module["__av_picture_type_none"]();
+  Module["FF_COMPLIANCE_EXPERIMENTAL"] =
+    Module["__ff_compliance_experimental"]();
 };

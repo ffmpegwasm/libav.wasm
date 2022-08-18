@@ -81,10 +81,35 @@ void _avcodec_context_set_time_base(AVCodecContext *ctx, AVRational *time_base) 
 	ctx->time_base = *time_base;
 }
 
+EMSCRIPTEN_KEEPALIVE
+void _avcodec_context_set_channels(AVCodecContext *ctx, int channels) {
+	ctx->channels = channels;
+}
+
+EMSCRIPTEN_KEEPALIVE
+void _avcodec_context_set_channel_layout(AVCodecContext *ctx, int64_t channel_layout) {
+	ctx->channel_layout = channel_layout;
+}
+
+EMSCRIPTEN_KEEPALIVE
+void _avcodec_context_set_sample_fmt(AVCodecContext *ctx, enum AVSampleFormat sample_fmt) {
+	ctx->sample_fmt = sample_fmt;
+}
+
+EMSCRIPTEN_KEEPALIVE
+void _avcodec_context_set_strict_std_compliance(AVCodecContext *ctx, int ssc) {
+	ctx->strict_std_compliance = ssc;
+}
+
 /**
  * Functions
  */
 EMSCRIPTEN_KEEPALIVE
 int _av_codec_flag_global_header() {
 	return AV_CODEC_FLAG_GLOBAL_HEADER;
+}
+
+EMSCRIPTEN_KEEPALIVE
+int _ff_compliance_experimental() {
+	return FF_COMPLIANCE_EXPERIMENTAL;
 }

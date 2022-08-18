@@ -15,7 +15,7 @@ const {
   ref,
   deref,
   stringToPtr,
-	AVIOContext,
+  AVIOContext,
   AVCodec,
   AVCodecContext,
   AVDictionary,
@@ -29,7 +29,7 @@ const {
   AVMEDIA_TYPE_AUDIO,
   AVMEDIA_TYPE_VIDEO,
   AVPacket,
-	AVRational,
+  AVRational,
   AVStream,
   AV_CODEC_FLAG_GLOBAL_HEADER,
   AV_PICTURE_TYPE_NONE,
@@ -60,7 +60,6 @@ const {
   _avformat_alloc_context,
   _avformat_alloc_output_context2,
   _avformat_find_stream_info,
-  _avformat_free_context,
   _avformat_new_stream,
   _avformat_open_input,
   _avformat_write_header,
@@ -219,11 +218,44 @@ const prepare_video_encoder = (sc, decoder_ctx, input_framerate, sp) => {
   return 0;
 };
 
-// WIP
-// const prepare_audio_encoder = (sc, sample_rate, sp) => {
-//   sc.audio_avs = new AVStream(_avformat_new_stream(sc.avfc.ptr, NULL));
-//   sc.audio_avc = new AVCodec(_avcodec_find_encoder_by_name(sp.audio_codec));
-// };
+const prepare_audio_encoder = (sc, sample_rate, sp) => {
+  sc.audio_avs = new AVStream(_avformat_new_stream(sc.avfc.ptr, NULL));
+
+  sc.audio_avc = new AVCodec(_avcodec_find_encoder_by_name(sp.audio_codec));
+  if (!sc.audio_avc.ptr) {
+    console.log("could not find the proper codec");
+    return -1;
+  }
+
+  sc.audio_avcc = new AVCodec(_avcodec_alloc_context3(sc.audio_avc.ptr));
+  if (!sc.audio_avcc.ptr) {
+    console.log("could not allocatd memory for codec context");
+    return -1;
+  }
+
+  const OUTPUT_CHANNELS = 2;
+  const OUTPUT_BIT_RATE = 196000;
+
+  sc.audio_avcc.channels = OUTPUT_CHANNELS;
+  sc.audio_avcc.channel_layout =
+    _av_get_default_channel_layout(OUTPUT_CHANNELS);
+  sc.audio_avcc.sample_rate = sample_rate;
+  sc.audio_avcc.sample_fmt = sc.audio_avc.nth_sample_fmt(0);
+  sc.audio_avcc.bit_rate = OUTPUT_BIT_RATE;
+  sc.audio.avcc.time_base = new AVRational(__av_rational_alloc(1, sample_rate));
+  sc.audio_avcc.strict_std_compliance = FF_COMPLIANCE_EXPERIMENTAL;
+  sc.audio_avs.time_base = sc.audio_avcc.time_base;
+
+  if (_avcodec_open2(sc.audio_avcc.ptr, sc.audio_avc.ptr, NULL) < 0) {
+    console.log("could not open the codec");
+    return -1;
+  }
+  _avcodec_parameters_from_context(
+    sc.audio_avs.codecpar.ptr,
+    sc.audio_avcc.ptr
+  );
+  return 0;
+};
 
 const prepare_copy = (avfc, avs, decoder_par) => {
   avs.ptr = _avformat_new_stream(avfc.ptr, NULL);
@@ -286,6 +318,71 @@ const encode_video = (decoder, encoder, input_frame) => {
   }
   _av_packet_unref(output_packet.ptr);
   _av_packet_free(ref(output_packet.ptr));
+  return 0;
+};
+
+const encode_audio = (decoder, encoder, input_frame) => {
+  const output_packet = new AVPacket(_av_packet_alloc());
+  if (!output_packet) {
+    console.log("could not allocate memory for output packet");
+    return -1;
+  }
+
+  let response = _avcodec_send_frame(encoder.audio_avcc.ptr, input_frame.ptr);
+
+  while (response >= 0) {
+    response = _avcodec_receive_packet(
+      encoder.audio_avcc.ptr,
+      output_packet.ptr
+    );
+
+    if (response === AVERROR_EAGAIN || response === AVERROR_EOF) {
+      break;
+    } else if (response < 0) {
+      console.log("Error while receiving packet from encoder", response);
+      return response;
+    }
+
+    output_packet.stream_index = decoder.audio_index;
+
+    __av_packet_rescale_ts(
+      output_packet.ptr,
+      decoder.audio_avs.time_base.ptr,
+      encoder.audio_avs.time_base.ptr
+    );
+    response = _av_interleaved_write_frame(encoder.avfc.ptr, output_packet.ptr);
+    if (response != 0) {
+      console.log("Error while receiving packet from decoder", response);
+      return -1;
+    }
+  }
+  _av_packet_unref(output_packet.ptr);
+  _av_packet_free(ref(output_packet.ptr));
+  return 0;
+};
+
+const transcode_audio = (decoder, encoder, input_packet, input_frame) => {
+  let response = _avcodec_send_packet(decoder.audio_avcc.ptr, input_packet.ptr);
+  if (response < 0) {
+    console.log("Error while sending packet to decoder", response);
+    return response;
+  }
+
+  while (response >= 0) {
+    response = _avcodec_receive_frame(decoder.audio_avcc.ptr, input_frame.ptr);
+
+    if (response === AVERROR_EAGAIN || response === AVERROR_EOF) {
+      break;
+    } else if (response < 0) {
+      console.log("Error while receiving frame from decoder", response);
+      return response;
+    }
+
+    if (response >= 0) {
+      if (encode_audio(decoder, encoder, input_frame)) return -1;
+    }
+    _av_frame_unref(input_frame.ptr);
+  }
   return 0;
 };
 
@@ -370,10 +467,9 @@ const main = () => {
   }
 
   if (!sp.copy_audio) {
-    console.log("WIP");
-    // if (prepare_audio_encoder(encoder, decoder.audio_avcc.sample_rate, sp)) {
-    //   return -1;
-    // }
+    if (prepare_audio_encoder(encoder, decoder.audio_avcc.sample_rate, sp)) {
+      return -1;
+    }
   } else {
     if (
       prepare_copy(encoder.avfc, encoder.audio_avs, decoder.audio_avs.codecpar)
@@ -448,7 +544,9 @@ const main = () => {
       AVMEDIA_TYPE_AUDIO
     ) {
       if (!sp.copy_audio) {
-        console.log("WIP");
+        if (transcode_audio(decoder, encoder, input_packet, input_frame))
+          return -1;
+        _av_packet_unref(input_packet.ptr);
       } else {
         if (
           remux(
@@ -473,10 +571,9 @@ const main = () => {
   console.log(`write output file to ${oFilePath}`);
   writeFileSync(oFilePath, readFile(oFileName));
 
-  _avformat_free_context(decoder.avfc.ptr);
-  _avformat_free_context(encoder.avfc.ptr);
-  decoder.avfc = NULL;
-  encoder.avfc = NULL;
+  // TODO: free resources.
+
+  return 0;
 };
 
 main();
