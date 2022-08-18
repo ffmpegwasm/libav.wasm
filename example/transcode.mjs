@@ -15,54 +15,56 @@ const {
   ref,
   deref,
   stringToPtr,
-  AVFormatContext,
+	AVIOContext,
   AVCodec,
-  AVStream,
   AVCodecContext,
   AVDictionary,
-  AVFrame,
-  AVPacket,
-  AVMEDIA_TYPE_VIDEO,
-  AVMEDIA_TYPE_AUDIO,
-  AVFMT_GLOBALHEADER,
-  AV_CODEC_FLAG_GLOBAL_HEADER,
-  AVFMT_NOFILE,
-  AVIO_FLAG_WRITE,
   AVERROR_EAGAIN,
   AVERROR_EOF,
+  AVFMT_GLOBALHEADER,
+  AVFMT_NOFILE,
+  AVFormatContext,
+  AVFrame,
+  AVIO_FLAG_WRITE,
+  AVMEDIA_TYPE_AUDIO,
+  AVMEDIA_TYPE_VIDEO,
+  AVPacket,
+	AVRational,
+  AVStream,
+  AV_CODEC_FLAG_GLOBAL_HEADER,
   AV_PICTURE_TYPE_NONE,
-  _avformat_alloc_context,
-  _avformat_open_input,
-  _avformat_free_context,
-  _avformat_find_stream_info,
-  _avcodec_find_decoder,
-  _avcodec_alloc_context3,
-  _avcodec_parameters_to_context,
-  _avcodec_open2,
-  _avformat_alloc_output_context2,
   __av_guess_frame_rate,
-  _avformat_new_stream,
-  _avcodec_find_encoder_by_name,
-  _av_opt_set,
   __av_inv_q,
-  _avcodec_parameters_from_context,
-  _avcodec_parameters_copy,
-  _avio_open,
-  _av_dict_set,
-  _avformat_write_header,
-  _av_frame_alloc,
-  _av_packet_alloc,
-  _av_read_frame,
-  _avcodec_send_packet,
-  _avcodec_receive_frame,
-  _av_packet_unref,
-  _avcodec_send_frame,
-  _avcodec_receive_packet,
-  _av_packet_free,
-  _av_frame_unref,
   __av_packet_rescale_ts,
+  _av_dict_set,
+  _av_frame_alloc,
+  _av_frame_unref,
   _av_interleaved_write_frame,
+  _av_opt_set,
+  _av_packet_alloc,
+  _av_packet_free,
+  _av_packet_unref,
+  _av_read_frame,
   _av_write_trailer,
+  _avcodec_alloc_context3,
+  _avcodec_find_decoder,
+  _avcodec_find_encoder_by_name,
+  _avcodec_open2,
+  _avcodec_parameters_copy,
+  _avcodec_parameters_from_context,
+  _avcodec_parameters_to_context,
+  _avcodec_receive_frame,
+  _avcodec_receive_packet,
+  _avcodec_send_frame,
+  _avcodec_send_packet,
+  _avformat_alloc_context,
+  _avformat_alloc_output_context2,
+  _avformat_find_stream_info,
+  _avformat_free_context,
+  _avformat_new_stream,
+  _avformat_open_input,
+  _avformat_write_header,
+  _avio_open,
 } = await createLibav();
 console.timeEnd("load-libav");
 
@@ -143,12 +145,12 @@ const prepare_decoder = (sc) => {
   for (let i = 0; i < sc.avfc.nb_streams; i++) {
     const codec_type = sc.avfc.nth_stream(i).codecpar.codec_type;
     if (codec_type === AVMEDIA_TYPE_VIDEO) {
-      sc.video_avs.ptr = sc.avfc.nth_stream(i).ptr;
+      sc.video_avs = sc.avfc.nth_stream(i);
       sc.video_index = i;
       if (fill_stream_info(sc.video_avs, sc.video_avc, sc.video_avcc))
         return -1;
     } else if (codec_type === AVMEDIA_TYPE_AUDIO) {
-      sc.audio_avs.ptr = sc.avfc.nth_stream(i).ptr;
+      sc.audio_avs = sc.avfc.nth_stream(i);
       sc.audio_index = i;
       if (fill_stream_info(sc.audio_avs, sc.audio_avc, sc.audio_avcc))
         return -1;
@@ -203,8 +205,8 @@ const prepare_video_encoder = (sc, decoder_ctx, input_framerate, sp) => {
   sc.video_avcc.rc_max_rate = 2 * 1000 * 1000;
   sc.video_avcc.rc_min_rate = 2.5 * 1000 * 1000;
 
-  sc.video_avcc.time_base = __av_inv_q(input_framerate);
-  sc.video_avs.time_base = sc.video_avcc.time_base.ptr;
+  sc.video_avcc.time_base = new AVRational(__av_inv_q(input_framerate));
+  sc.video_avs.time_base = sc.video_avcc.time_base;
 
   if (_avcodec_open2(sc.video_avcc.ptr, sc.video_avc.ptr, NULL) < 0) {
     console.log("colud not open the codec");
@@ -282,8 +284,8 @@ const encode_video = (decoder, encoder, input_frame) => {
       return -1;
     }
   }
-  _av_packet_unref(output_packet);
-  _av_packet_free(ref(output_packet));
+  _av_packet_unref(output_packet.ptr);
+  _av_packet_free(ref(output_packet.ptr));
   return 0;
 };
 
@@ -307,7 +309,7 @@ const transcode_video = (decoder, encoder, input_packet, input_frame) => {
     if (response >= 0) {
       if (encode_video(decoder, encoder, input_frame)) return -1;
     }
-    _av_frame_unref(input_frame);
+    _av_frame_unref(input_frame.ptr);
   }
   return 0;
 };
@@ -390,7 +392,7 @@ const main = () => {
       console.log("could not open the output file");
       return -1;
     }
-    encoder.avfc.pb = deref(ptr);
+    encoder.avfc.pb = new AVIOContext(deref(ptr));
   }
 
   const muxer_opts = new AVDictionary(NULL);

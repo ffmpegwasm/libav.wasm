@@ -58,7 +58,7 @@ class AVFormatContext extends Base {
   }
 
   set pb(p) {
-    Module["__avformat_context_set_pb"](this.ptr, p);
+    Module["__avformat_context_set_pb"](this.ptr, p.ptr);
   }
 }
 
@@ -99,7 +99,7 @@ class AVStream extends Base {
   }
 
   set time_base(tb) {
-    Module["__avstream_set_time_base"](this.ptr, tb);
+    Module["__avstream_set_time_base"](this.ptr, tb.ptr);
   }
 }
 
@@ -157,7 +157,7 @@ class AVCodecContext extends Base {
   }
 
   set time_base(tb) {
-    Module["__avcodec_context_set_time_base"](this.ptr, tb);
+    Module["__avcodec_context_set_time_base"](this.ptr, tb.ptr);
   }
 }
 
