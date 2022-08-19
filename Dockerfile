@@ -1,7 +1,7 @@
 # Base emsdk image with environment variables.
 FROM emscripten/emsdk:3.1.18 AS emsdk-base
 ENV INSTALL_DIR=/src/build
-ENV CFLAGS="$CFLAGS -O3"
+ENV CFLAGS="$CFLAGS"
 ENV FFMPEG_VERSION=n5.1
 ENV EM_PKG_CONFIG_PATH=$EM_PKG_CONFIG_PATH:$INSTALL_DIR/lib/pkgconfig:/emsdk/upstream/emscripten/system/lib/pkgconfig
 ENV PKG_CONFIG_PATH=$PKG_CONFIG_PATH:$EM_PKG_CONFIG_PATH
