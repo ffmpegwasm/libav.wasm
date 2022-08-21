@@ -38,11 +38,11 @@ required to install docker 19.03 or above before you run any build script.
 - Build libav.wasm
 
 ```bash
-# default build
-$ bash build.sh
+# build `dev` version
+$ make
 
-# build with details
-$ bash build.sh --progress plain
+# build `prod` version (slower, optimized with -O3)
+$ make prod
 ```
 
 If nothing went wrong, you should find libav assets in **dist/**.

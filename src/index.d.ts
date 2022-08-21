@@ -8,14 +8,15 @@ type PtrPtrAVDictionary = Pointer;
 type AVERROR = number;
 
 export interface AVInputFormat {
-  contructor(ptr: PtrAVInputFormat): void;
+  new (ptr: AVInputFormat): AVInputFormat;
   ptr: PtrAVInputFormat;
   name: string;
 }
 
 export interface AVFormatContext {
-  contructor(ptr: PtrAVFormatContext): void;
+  new (ptr: PtrAVFormatContext): AVFormatContext;
   ptr: PtrAVFormatContext;
+  url: string;
   iformat: AVInputFormat;
   duration: number;
   bit_rate: number;
@@ -29,13 +30,15 @@ export interface FS {
 export interface Libav {
   FS: FS;
   NULL: number;
-  ref(p: Pointer): Pointer;
-  stringToPtr: PtrString;
-  avformat_alloc_context(): PtrAVFormatContext;
-  avformat_free_context(ctx: PtrAVFormatContext): void;
-  avformat_open_input(
+  ref<TPointer>(p: TPointer): TPointer;
+  deref<TPointer>(p: TPointer): TPointer;
+  stringToPtr(str: string): PtrString;
+  AVFormatContext: AVFormatContext;
+  _avformat_alloc_context(): PtrAVFormatContext;
+  _avformat_free_context(ctx: PtrAVFormatContext): void;
+  _avformat_open_input(
     ctx: PtrPtrAVFormatContext,
-    url: string,
+    url: PtrString,
     fmt: PtrAVInputFormat,
     options: PtrPtrAVDictionary
   ): AVERROR;

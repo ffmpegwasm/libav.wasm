@@ -1,7 +1,12 @@
-all: build
+all: dev
 
-build:
+dev:
 	bash build.sh --progress plain
+
+prd:
+	EXTRA_CFLAGS="-O3" \
+	EXTRA_LDFLAGS="-O3" \
+		bash build.sh --build-arg EXTRA_CFLAGS --build-arg EXTRA_LDFLAGS
 
 run-metadata:
 	node example/metadata.mjs testdata/video-1080p-60fps-2s.mp4

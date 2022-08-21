@@ -1,8 +1,11 @@
 # Base emsdk image with environment variables.
 FROM emscripten/emsdk:3.1.18 AS emsdk-base
+ARG EXTRA_CFLAGS
+ARG EXTRA_LDFLAGS
 ENV INSTALL_DIR=/src/build
-ENV CFLAGS="$CFLAGS"
 ENV FFMPEG_VERSION=n5.1
+ENV CFLAGS="$CFLAGS $EXTRA_CFLAGS"
+ENV LDFLAGS="$LDFLAGS $EXTRA_LDFLAGS"
 ENV EM_PKG_CONFIG_PATH=$EM_PKG_CONFIG_PATH:$INSTALL_DIR/lib/pkgconfig:/emsdk/upstream/emscripten/system/lib/pkgconfig
 ENV PKG_CONFIG_PATH=$PKG_CONFIG_PATH:$EM_PKG_CONFIG_PATH
 
@@ -91,10 +94,11 @@ RUN emcc \
 	-lswresample \
 	-lswscale \
 	-lx264 \
+	$LDFLAGS \
   -sMODULARIZE \
 	-sALLOW_MEMORY_GROWTH \
 	-sEXPORTED_FUNCTIONS=$(node src/bind/export.js) \
-	-sEXPORTED_RUNTIME_METHODS=FS,setValue,getValue,UTF8ToString,lengthBytesUTF8,stringToUTF8 \
+	-sEXPORTED_RUNTIME_METHODS=$(node src/bind/export-runtime.js) \
 	--pre-js src/bind/bind.js \
 	-o dist/libav.js \
 	src/bind/**/*.c

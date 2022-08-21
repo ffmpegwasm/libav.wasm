@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "libav WebAssembly port",
   "main": "src/index.js",
-	"types": "src/index.d.ts",
+  "types": "src/index.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -22,5 +22,8 @@
   "bugs": {
     "url": "https://github.com/ffmpegwasm/libav.wasm/issues"
   },
-  "homepage": "https://github.com/ffmpegwasm/libav.wasm#readme"
+  "homepage": "https://github.com/ffmpegwasm/libav.wasm#readme",
+  "dependencies": {
+    "@types/node": "^18.7.8"
+  }
 }

@@ -2,8 +2,11 @@
  * Constants
  */
 
-Module["NULL"] = 0;
-Module["SIZE_I32"] = Uint32Array.BYTES_PER_ELEMENT;
+const NULL = 0;
+const SIZE_I32 = Uint32Array.BYTES_PER_ELEMENT;
+
+Module["NULL"] = NULL;
+Module["SIZE_I32"] = SIZE_I32;
 
 /**
  * Classes
@@ -11,7 +14,15 @@ Module["SIZE_I32"] = Uint32Array.BYTES_PER_ELEMENT;
 
 class Base {
   constructor(ptr) {
-    this.ptr = ptr;
+    this._ptr = ptr;
+  }
+
+  get ptr() {
+    return this._ptr;
+  }
+
+  set ptr(p) {
+    this._ptr = p;
   }
 }
 
@@ -234,23 +245,21 @@ Module["AVPacket"] = AVPacket;
  */
 
 const stringToPtr = function (str) {
-  const { _malloc, lengthBytesUTF8, stringToUTF8 } = Module;
-  const len = lengthBytesUTF8(str) + 1;
-  const ptr = _malloc(len);
-  stringToUTF8(str, ptr, len);
+  const len = Module["lengthBytesUTF8"](str) + 1;
+  const ptr = Module["_malloc"](len);
+  Module["stringToUTF8"](str, ptr, len);
 
   return ptr;
 };
 
 const ref = function (p) {
-  const { _malloc, SIZE_I32, setValue } = Module;
-  const ptr = _malloc(SIZE_I32);
-  setValue(ptr, p, "i32");
+  const ptr = Module["_malloc"](SIZE_I32);
+  Module["setValue"](ptr, p, "i32");
   return ptr;
 };
 
 const deref = function (p) {
-  return getValue(p, "i32");
+  return Module["getValue"](p, "i32");
 };
 
 Module["stringToPtr"] = stringToPtr;
