@@ -42,7 +42,7 @@ required to install docker 19.03 or above before you run any build script.
 $ make
 
 # build `prod` version (slower, optimized with -O3)
-$ make prod
+$ make prd
 ```
 
 If nothing went wrong, you should find libav assets in **dist/**.
