@@ -26,7 +26,11 @@ jobs:
         restore-keys: |
           build-cache-
     - name: Build libav.wasm
-      run: bash build.sh --cache-from=type=local,src=build-cache --cache-to=type=local,dest=build-cache,mode=max
+      run: |
+        EXTRA_CFLAGS="-O3" \
+        EXTRA_LDFLAGS="-O3" \
+          bash build.sh --build-arg EXTRA_CFLAGS --build-arg EXTRA_LDFLAGS \
+          --cache-from=type=local,src=build-cache --cache-to=type=local,dest=build-cache,mode=max
     - uses: actions/upload-artifact@v3
       with:
         name: libav.wasm
