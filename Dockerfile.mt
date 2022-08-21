@@ -5,20 +5,20 @@ ARG EXTRA_LDFLAGS
 ENV INSTALL_DIR=/src/build
 ENV FFMPEG_VERSION=n5.1
 ENV CFLAGS="$CFLAGS -sUSE_PTHREADS -pthread $EXTRA_CFLAGS"
-ENV LDFLAGS="$LDFLAGS -sUSE_PTHREADS -sPTHREAD_POOL_SIZE=16 -pthread $EXTRA_LDFLAGS"
+ENV LDFLAGS="$LDFLAGS -sUSE_PTHREADS -pthread $EXTRA_LDFLAGS"
 ENV EM_PKG_CONFIG_PATH=$EM_PKG_CONFIG_PATH:$INSTALL_DIR/lib/pkgconfig:/emsdk/upstream/emscripten/system/lib/pkgconfig
 ENV PKG_CONFIG_PATH=$PKG_CONFIG_PATH:$EM_PKG_CONFIG_PATH
 
 # Build x264
 FROM emsdk-base AS x264-builder
 RUN git clone \
-			--branch stable-wasm \
+			--branch 4-cores \
 			--depth 1 \
 			https://github.com/ffmpegwasm/x264 \
 			/src
 RUN emconfigure ./configure \
 			--prefix=$INSTALL_DIR \
-			--host=i686-gnu \
+			--host=x86-gnu \
 			--enable-static \
 			--disable-cli \
 			--disable-asm \
@@ -91,6 +91,7 @@ RUN emcc \
 	-lswscale \
 	-lx264 \
 	$LDFLAGS \
+	-sPTHREAD_POOL_SIZE=8 \
 	-sINITIAL_MEMORY=1024MB \
   -sMODULARIZE \
 	-sEXPORT_NAME="createLibav" \

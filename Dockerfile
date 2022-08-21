@@ -18,7 +18,7 @@ RUN git clone \
 			/src
 RUN emconfigure ./configure \
 			--prefix=$INSTALL_DIR \
-			--host=i686-gnu \
+			--host=x86-gnu \
 			--enable-static \
 			--disable-cli \
 			--disable-asm \
