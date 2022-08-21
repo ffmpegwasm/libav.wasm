@@ -91,7 +91,7 @@ RUN emcc \
 	-lswscale \
 	-lx264 \
 	$LDFLAGS \
-	-sINITIAL_MEMORY=1073741824 \
+	-sINITIAL_MEMORY=1024MB \
   -sMODULARIZE \
 	-sEXPORT_NAME="createLibav" \
 	-sEXPORTED_FUNCTIONS=$(node src/bind/export.js) \
