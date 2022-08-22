@@ -75,4 +75,4 @@ libav.wasm is built using tools/libraries with version:
 | ----- | ------- |
 | emsdk | 3.1.18  |
 | FFmpeg | n5.1  |
-| x264 | 0.160.x  |
+| x264 | 0.164.x (num of cpu fixed to 4) |
