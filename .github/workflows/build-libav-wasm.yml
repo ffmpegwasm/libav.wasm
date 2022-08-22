@@ -21,10 +21,10 @@ jobs:
       id: cache-build
       uses: actions/cache@v3
       with:
-        path: build-cache
-        key: build-cache-${{ hashFiles('Dockerfile*') }}
+        path: build-cache-v1
+        key: build-cache-v1-${{ hashFiles('Dockerfile*') }}
         restore-keys: |
-          build-cache-
+          build-cache-v1-
     - name: Build libav.wasm
       run: |
         EXTRA_CFLAGS="-O3" \
