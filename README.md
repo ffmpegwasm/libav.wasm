@@ -83,3 +83,7 @@ libav.wasm is built using tools/libraries with version:
 | emsdk | 3.1.18  |
 | FFmpeg | n5.1  |
 | x264 | 0.164.x (num of cpu fixed to 4) |
+
+## Similar Projects
+
+- libav.js: https://github.com/Yahweasel/libav.js
