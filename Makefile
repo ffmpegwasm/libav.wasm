@@ -4,8 +4,8 @@ dev:
 	bash build.sh --progress plain
 
 prd:
-	EXTRA_CFLAGS="-O3" \
-	EXTRA_LDFLAGS="-O3" \
+	EXTRA_CFLAGS="-O3 -msimd128" \
+	EXTRA_LDFLAGS="-O3 -msimd128" \
 		bash build.sh --build-arg EXTRA_CFLAGS --build-arg EXTRA_LDFLAGS
 
 run-metadata:
