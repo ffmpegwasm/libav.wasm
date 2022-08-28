@@ -5,7 +5,7 @@ ARG EXTRA_LDFLAGS
 ENV INSTALL_DIR=/src/build
 ENV FFMPEG_VERSION=n5.1
 ENV CFLAGS="$CFLAGS $EXTRA_CFLAGS"
-ENV LDFLAGS="$LDFLAGS $EXTRA_LDFLAGS"
+ENV LDFLAGS="$LDFLAGS $CFLAGS $EXTRA_LDFLAGS"
 ENV EM_PKG_CONFIG_PATH=$EM_PKG_CONFIG_PATH:$INSTALL_DIR/lib/pkgconfig:/emsdk/upstream/emscripten/system/lib/pkgconfig
 ENV PKG_CONFIG_PATH=$PKG_CONFIG_PATH:$EM_PKG_CONFIG_PATH
 
@@ -44,8 +44,7 @@ RUN emconfigure ./configure \
   --target-os=none \
   --arch=x86_32 \
   --enable-cross-compile \
-  --disable-x86asm \
-  --disable-inline-asm \
+  --disable-asm \
   --disable-stripping \
   --disable-programs \
   --disable-doc \
