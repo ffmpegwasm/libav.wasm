@@ -5,7 +5,7 @@ ARG EXTRA_LDFLAGS
 ENV INSTALL_DIR=/src/build
 ENV FFMPEG_VERSION=n5.1
 ENV CFLAGS="$CFLAGS -sUSE_PTHREADS -pthread $EXTRA_CFLAGS"
-ENV LDFLAGS="$LDFLAGS -sUSE_PTHREADS -pthread $EXTRA_LDFLAGS"
+ENV LDFLAGS="$LDFLAGS $CFLAGS $EXTRA_LDFLAGS"
 ENV EM_PKG_CONFIG_PATH=$EM_PKG_CONFIG_PATH:$INSTALL_DIR/lib/pkgconfig:/emsdk/upstream/emscripten/system/lib/pkgconfig
 ENV PKG_CONFIG_PATH=$PKG_CONFIG_PATH:$EM_PKG_CONFIG_PATH
 
@@ -43,8 +43,7 @@ RUN emconfigure ./configure \
   --target-os=none \
   --arch=x86_32 \
   --enable-cross-compile \
-  --disable-x86asm \
-  --disable-inline-asm \
+  --disable-asm \
   --disable-stripping \
   --disable-programs \
   --disable-doc \
@@ -90,15 +89,16 @@ RUN emcc \
 	-lswresample \
 	-lswscale \
 	-lx264 \
+  -Wno-deprecated-declarations \
 	$LDFLAGS \
 	-sPTHREAD_POOL_SIZE=8 \
 	-sINITIAL_MEMORY=1024MB \
   -sMODULARIZE \
-	-sEXPORT_NAME="createLibav" \
+	-sEXPORT_NAME="createLibavCore" \
 	-sEXPORTED_FUNCTIONS=$(node src/bind/export.js) \
 	-sEXPORTED_RUNTIME_METHODS=$(node src/bind/export-runtime.js) \
 	--pre-js src/bind/bind.js \
-	-o dist/libav-mt.js \
+	-o dist/libav-core.js \
 	src/bind/**/*.c
 
 # Export libav.wasm to dist/, use `docker buildx build -o . .` to get assets
