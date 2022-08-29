@@ -29,5 +29,5 @@ jobs:
       run: make ci
     - uses: actions/upload-artifact@v3
       with:
-        name: libav.wasm
-        path: dist
+        name: libav-core
+        path: packages/libav-core/dist/*
