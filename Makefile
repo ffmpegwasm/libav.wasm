@@ -1,14 +1,21 @@
 all: dev
 
+CFLAGS := -O3 -msimd128
+CACHE_ARGS := --cache-from=type=local,src=build-cache --cache-to=type=local,dest=build-cache,mode=max
+
+copy-files:
+	cp ./src/libav.d.ts ./packages/libav-core/dist/
+
+build:
+	EXTRA_CFLAGS="$(EXTRA_CFLAGS)" \
+		bash build.sh --build-arg EXTRA_CFLAGS $(ARGS)
+	make copy-files
+
 dev:
-	bash build.sh --progress plain
+	make build ARGS="--progress plain"
 
 prd:
-	EXTRA_CFLAGS="-O3 -msimd128" \
-		bash build.sh --build-arg EXTRA_CFLAGS --build-arg EXTRA_LDFLAGS
+	make build EXTRA_CFLAGS="$(CFLAGS)"
 
-run-metadata:
-	node example/metadata.mjs testdata/video-1080p-60fps-2s.mp4
-
-run-transcode:
-	node example/transcode.mjs testdata/video-1080p-60fps-2s.mp4 output.mp4
+ci:
+	make build EXTRA_CFLAGS="$(CFLAGS)" ARGS="$(CACHE_ARGS)"

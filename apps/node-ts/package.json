@@ -1,0 +1,27 @@
+{
+  "name": "node-ts",
+  "version": "0.0.1",
+  "description": "libav.wasm node demo apps",
+  "main": "index.js",
+  "scripts": {
+    "exports": "ts-node src/exports.ts",
+    "metadata": "ts-node src/metadata.ts ../../testdata/video-1080p-60fps-2s.mp4",
+    "transcode": "ts-node src/transcode.ts ../../testdata/video-1080p-60fps-2s.mp4 output.mp4",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ffmpegwasm/libav.wasm.git"
+  },
+  "author": "Jerome Wu <jeromewus@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ffmpegwasm/libav.wasm/issues"
+  },
+  "homepage": "https://github.com/ffmpegwasm/libav.wasm#readme",
+  "dependencies": {
+    "@ffmpeg/libav": "^0.0.1",
+    "@ffmpeg/libav-core": "^0.0.1",
+    "ts-node": "^10.9.1"
+  }
+}

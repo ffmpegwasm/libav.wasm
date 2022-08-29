@@ -74,6 +74,7 @@ COPY src /src/src
 RUN mkdir -p /src/dist
 RUN emcc \
   -I. \
+  -I./fftools \
 	-I$INSTALL_DIR/include \
 	-L$INSTALL_DIR/lib \
   -Llibavcodec \
@@ -93,6 +94,7 @@ RUN emcc \
 	-lswresample \
 	-lswscale \
 	-lx264 \
+  -Wno-deprecated-declarations \
 	$LDFLAGS \
   -sMODULARIZE \
 	-sALLOW_MEMORY_GROWTH \

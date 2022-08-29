@@ -1,29 +1,15 @@
 {
-  "name": "@ffmpeg/libav",
-  "version": "0.0.1",
-  "description": "libav WebAssembly port",
-  "main": "src/index.js",
-  "types": "src/index.d.ts",
+  "name": "libav.wasm",
+  "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "bootstrap": "lerna bootstrap",
+    "build": "lerna run build"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/ffmpegwasm/libav.wasm.git"
-  },
-  "keywords": [
-    "ffmpeg",
-    "libav",
-    "webassembly",
-    "wasm"
+  "workspaces": [
+    "packages/*",
+    "apps/*"
   ],
-  "author": "Jerome Wu <jeromewus@gmail.com>",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/ffmpegwasm/libav.wasm/issues"
-  },
-  "homepage": "https://github.com/ffmpegwasm/libav.wasm#readme",
-  "dependencies": {
-    "@types/node": "^18.7.8"
+  "devDependencies": {
+    "lerna": "^5.4.3"
   }
 }

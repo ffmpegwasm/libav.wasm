@@ -2,5 +2,5 @@
 
 docker buildx build \
 	$@ \
-	-o . \
+	-o ./packages/libav-core \
 	.

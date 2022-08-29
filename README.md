@@ -41,7 +41,7 @@ required to install docker 19.03 or above before you run any build script.
 # build `dev` version
 $ make
 
-# build `prod` version (slower, optimized with -O3)
+# build `prod` version (slower, optimized with -O3 -msimd128)
 $ make prd
 ```
 
@@ -49,7 +49,7 @@ If nothing went wrong, you should find libav assets in **dist/**.
 
 ## Try it
 
-A few examples can be found in **example/**, feel free to try and see how
+A few examples can be found in **apps/node-ts**, feel free to try and see how
 it works in action.
 
 > As these examples use video files in testdata/, you need to do a 
@@ -58,13 +58,13 @@ it works in action.
 - metadata: use libav.wasm to extra video metadata
 
 ```
-make run-metadata
+npm run metadata
 ```
 
 - transcode: use libav.wasm to transcode mp4 to a gop fixed mp4
 
 ```
-make run-transcode
+npm run transcode
 ```
 
 ## Configuration

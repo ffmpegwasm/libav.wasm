@@ -29,6 +29,8 @@ const EXPORTED_FUNCTIONS = [
   "_avformat_open_input",
   "_avformat_write_header",
   "_avio_open",
+  "_malloc",
+  "_free",
 ];
 
 console.log(EXPORTED_FUNCTIONS.join(","));
