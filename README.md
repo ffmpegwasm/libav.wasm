@@ -35,6 +35,13 @@ The ultimate goal of libav.wasm is to enable a ffmpeg.wasm with better developer
 We use docker to achieve a (hopefully) cached and reproducible build, so it is
 required to install docker 19.03 or above before you run any build script.
 
+- Install dependencies & build assets
+
+```bash
+npx lerna run bootstrap
+npx lerna run build
+```
+
 - Build libav.wasm
 
 ```bash
