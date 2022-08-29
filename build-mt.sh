@@ -3,5 +3,5 @@
 docker buildx build \
 	-f Dockerfile.mt \
 	$@ \
-	-o . \
+	-o packages/libav-core-mt \
 	.

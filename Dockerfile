@@ -101,7 +101,7 @@ RUN emcc \
 	-sEXPORTED_FUNCTIONS=$(node src/bind/export.js) \
 	-sEXPORTED_RUNTIME_METHODS=$(node src/bind/export-runtime.js) \
 	--pre-js src/bind/bind.js \
-	-o dist/libav.js \
+	-o dist/libav-core.js \
 	src/bind/**/*.c
 
 # Export libav.wasm to dist/, use `docker buildx build -o . .` to get assets
