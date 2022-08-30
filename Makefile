@@ -1,24 +1,22 @@
 all: dev
 
+VERBOSE_ARGS := --progress plain
 CFLAGS := -O3 -msimd128
 CACHE_ARGS := --cache-from=type=local,src=build-cache --cache-to=type=local,dest=build-cache,mode=max
-
-copy-files:
-	cp ./src/libav-core.d.ts ./packages/libav-core/dist/
 
 build:
 	EXTRA_CFLAGS="$(EXTRA_CFLAGS)" \
 		bash build$(SUFFIX).sh --build-arg EXTRA_CFLAGS $(ARGS)
-	make copy-files
+	cp src/libav-core.d.ts packages/libav-core$(SUFFIX)/dist
 
 build-mt:
 	make build SUFFIX="-mt"
 
 dev:
-	make build ARGS="--progress plain"
+	make build ARGS="$(VERBOSE_ARGS)"
 
 dev-mt:
-	make build-mt ARGS="--progress plain"
+	make build-mt ARGS="$(VERBOSE_ARGS)"
 
 prd:
 	make build EXTRA_CFLAGS="$(CFLAGS)"

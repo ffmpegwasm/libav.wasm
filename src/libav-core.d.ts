@@ -1,6 +1,3 @@
-/// <reference types="emscripten" />
-interface LibavCore extends EmscriptenModule {
-  NULL: number;
-}
-declare const LibavCoreFactory: EmscriptenModuleFactory<LibavCore>;
+import LibavCoreFactory from "../../libav-type/index.d";
+
 export default LibavCoreFactory;

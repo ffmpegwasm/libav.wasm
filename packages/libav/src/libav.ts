@@ -1,6 +1,8 @@
-let libav: EmscriptenModule;
+import { LibavCore } from "../../libav-type/index.d";
 
-export const initLibav = (_libav: EmscriptenModule) => {
+let libav: LibavCore;
+
+export const initLibav = (_libav: LibavCore) => {
   libav = _libav;
 };
 
