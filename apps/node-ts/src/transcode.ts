@@ -4,6 +4,7 @@
 
 // @ts-nocheck
 import createLibavCore from "@ffmpeg/libav-core";
+import { openMedia, initLibav } from "@ffmpeg/libav";
 import { readFileSync, writeFileSync } from "node:fs";
 import { basename } from "node:path";
 import { argv, exit } from "node:process";
@@ -11,6 +12,7 @@ import { argv, exit } from "node:process";
 (async () => {
   // load libav module.
   console.time("load-libav");
+  const libavCore = await createLibavCore();
   const {
     FS: { writeFile, readFile },
     NULL,
@@ -59,15 +61,13 @@ import { argv, exit } from "node:process";
     _avcodec_receive_packet,
     _avcodec_send_frame,
     _avcodec_send_packet,
-    _avformat_alloc_context,
     _avformat_alloc_output_context2,
-    _avformat_find_stream_info,
     _avformat_new_stream,
-    _avformat_open_input,
     _avformat_write_header,
     _avio_open,
     _free,
-  } = await createLibavCore();
+  } = libavCore;
+  initLibav(libavCore);
   console.timeEnd("load-libav");
 
   class StreamingParams {
@@ -115,29 +115,6 @@ import { argv, exit } from "node:process";
 
     if (_avcodec_open2(avcc.ptr, avc.ptr, NULL) < 0) {
       console.log("failed to open codec");
-      return -1;
-    }
-
-    return 0;
-  };
-
-  const open_media = (filename, avfc) => {
-    avfc.ptr = _avformat_alloc_context();
-    if (!avfc.ptr) {
-      console.log("failed to alloc memory for format");
-      return -1;
-    }
-
-    const ptr = ref(avfc.ptr);
-    if (_avformat_open_input(ptr, stringToPtr(filename), NULL, NULL) !== 0) {
-      console.log("failed to open input file ", filename);
-      return -1;
-    }
-    avfc.ptr = deref(ptr);
-    _free(ptr);
-
-    if (_avformat_find_stream_info(avfc.ptr, NULL) < 0) {
-      console.log("failed to get stream info");
       return -1;
     }
 
@@ -467,12 +444,14 @@ import { argv, exit } from "node:process";
     const encoder = new StreamingContext();
     encoder.filename = stringToPtr(oFileName);
 
-    if (open_media(iFileName, decoder.avfc)) return -1;
+    decoder.avfc = openMedia(iFileName);
+    if (!decoder.avfc) return -1;
     if (prepare_decoder(decoder)) return -1;
 
     let ptr = ref(encoder.avfc.ptr);
     _avformat_alloc_output_context2(ptr, NULL, NULL, encoder.filename);
     encoder.avfc.ptr = deref(ptr);
+    _free(ptr);
     if (!encoder.avfc.ptr) {
       console.log("could not allocate memory for output format");
       return -1;
@@ -523,6 +502,7 @@ import { argv, exit } from "node:process";
         return -1;
       }
       encoder.avfc.pb = new AVIOContext(deref(ptr));
+      _free(ptr);
     }
 
     const muxer_opts = new AVDictionary(NULL);
@@ -531,6 +511,7 @@ import { argv, exit } from "node:process";
       const ptr = ref(muxer_opts.ptr);
       _av_dict_set(ptr, sp.muxer_opt_key, sp.muxer_opt_value, 0);
       muxer_opts.ptr = deref(ptr);
+      _free(ptr);
     }
 
     ptr = ref(muxer_opts.ptr);
@@ -539,6 +520,7 @@ import { argv, exit } from "node:process";
       return -1;
     }
     muxer_opts.ptr = deref(ptr);
+    _free(ptr);
 
     const input_frame = new AVFrame(_av_frame_alloc());
     if (!input_frame.ptr) {
