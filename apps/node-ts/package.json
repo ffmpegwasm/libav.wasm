@@ -22,6 +22,7 @@
   "dependencies": {
     "@ffmpeg/libav": "^0.0.1",
     "@ffmpeg/libav-core": "^0.0.1",
+    "@ffmpeg/libav-core-mt": "^0.0.1",
     "ts-node": "^10.9.1"
   }
 }

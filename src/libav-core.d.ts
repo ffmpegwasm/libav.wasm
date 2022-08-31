@@ -1,3 +1,3 @@
-import LibavCoreFactory from "../../libav-type/index.d";
+/// <reference types="libav-core" />
 
 export default LibavCoreFactory;

@@ -66,7 +66,8 @@ RUN emconfigure ./configure \
 
 # Build libav.wasm
 FROM libav-builder AS libav-wasm-builder
-COPY src /src/src
+RUN mkdir -p /src/src
+COPY src/bind /src/src/bind
 RUN mkdir -p /src/dist
 RUN emcc \
   -I. \
