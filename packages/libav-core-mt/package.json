@@ -25,8 +25,5 @@
   "homepage": "https://github.com/ffmpegwasm/libav.wasm#readme",
   "publishConfig": {
     "access": "public"
-  },
-  "dependencies": {
-    "@types/emscripten": "^1.39.6"
   }
 }
