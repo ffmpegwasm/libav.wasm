@@ -26,6 +26,9 @@
     "url": "https://github.com/ffmpegwasm/libav.wasm/issues"
   },
   "homepage": "https://github.com/ffmpegwasm/libav.wasm#readme",
+  "publishConfig": {
+    "access": "public"
+  },
   "dependencies": {
     "@types/emscripten": "^1.39.6",
     "@types/node": "^18.7.8"
