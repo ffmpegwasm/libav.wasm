@@ -3,24 +3,24 @@
 // Definitions by: Jerome Wu <https://github.com/jeromewu>
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
 
-export declare type Pointer = number;
-export declare type PtrAVFormatContext = Pointer;
-export declare type PtrPtrAVFormatContext = Pointer;
-export declare type PtrAVInputFormat = Pointer;
-export declare type PtrAVDictionary = Pointer;
-export declare type PtrPtrAVDictionary = Pointer;
-export declare type PtrString = Pointer;
-export declare type ErrorCode = number;
-export declare type AVERROR = ErrorCode;
+export type Pointer = number;
+export type PtrAVFormatContext = Pointer;
+export type PtrPtrAVFormatContext = Pointer;
+export type PtrAVInputFormat = Pointer;
+export type PtrAVDictionary = Pointer;
+export type PtrPtrAVDictionary = Pointer;
+export type PtrString = Pointer;
+export type ErrorCode = number;
+export type AVERROR = ErrorCode;
 
-export declare class IBase {
+export class IBase {
   _ptr: Pointer;
   constructor(ptr: Pointer);
   get ptr(): Pointer;
   set ptr(ptr: Pointer);
 }
 
-export declare class IAVFormatContenxt extends IBase {}
+export class IAVFormatContenxt extends IBase {}
 
 export interface LibavCore {
   NULL: Pointer;

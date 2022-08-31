@@ -1,0 +1,26 @@
+{
+  "name": "libav-type",
+  "version": "0.0.1",
+  "description": "types for libav-core",
+  "types": "index.d.ts",
+  "private": true,
+  "scripts": {
+    "lint": "eslint index.d.ts",
+    "test": "node --require source-map-support/register ../../node_modules/@definitelytyped/dtslint/ ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ffmpegwasm/libav.wasm.git"
+  },
+  "author": "Jerome Wu <jeromewus@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ffmpegwasm/libav.wasm/issues"
+  },
+  "homepage": "https://github.com/ffmpegwasm/libav.wasm#readme",
+  "dependencies": {
+    "@definitelytyped/dtslint": "^0.0.127",
+    "@typescript-eslint/parser": "^5.36.1",
+    "eslint": "^8.23.0"
+  }
+}
