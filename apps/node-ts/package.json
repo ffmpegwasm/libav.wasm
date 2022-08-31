@@ -2,6 +2,7 @@
   "name": "node-ts",
   "version": "0.0.1",
   "description": "libav.wasm node demo apps",
+  "private": true,
   "main": "index.js",
   "scripts": {
     "exports": "ts-node src/exports.ts",
