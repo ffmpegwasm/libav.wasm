@@ -21,7 +21,7 @@ jobs:
       id: cache-build
       uses: actions/cache@v3
       with:
-        path: build-cache-v1
+        path: build-cache
         key: build-cache-v1-${{ hashFiles('Dockerfile*') }}
         restore-keys: |
           build-cache-v1-
