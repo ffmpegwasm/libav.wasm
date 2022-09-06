@@ -1,6 +1,6 @@
 {
   "name": "libav-type",
-  "version": "0.0.1",
+  "version": "0.0.1-alpha.0",
   "description": "types for libav-core",
   "types": "index.d.ts",
   "private": true,

@@ -1,6 +1,6 @@
 {
   "name": "@ffmpeg/libav-core",
-  "version": "0.0.1",
+  "version": "0.0.1-alpha.0",
   "description": "libav WebAssembly port",
   "main": "dist/libav-core.js",
   "types": "dist/libav-core.d.ts",
