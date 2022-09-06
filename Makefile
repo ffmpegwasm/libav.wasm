@@ -7,7 +7,6 @@ CACHE_ARGS := --cache-from=type=local,src=build-cache --cache-to=type=local,dest
 build:
 	EXTRA_CFLAGS="$(EXTRA_CFLAGS)" \
 		bash build$(SUFFIX).sh --build-arg EXTRA_CFLAGS $(ARGS)
-	cp src/libav-core.d.ts packages/libav-core$(SUFFIX)/dist
 
 build-mt:
 	make build SUFFIX="-mt"
