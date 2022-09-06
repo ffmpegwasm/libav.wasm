@@ -1,6 +1,6 @@
 {
   "name": "node-ts",
-  "version": "0.0.1-alpha.0",
+  "version": "0.0.1-alpha.1",
   "description": "libav.wasm node demo apps",
   "private": true,
   "main": "index.js",
@@ -22,8 +22,8 @@
   "homepage": "https://github.com/ffmpegwasm/libav.wasm#readme",
   "dependencies": {
     "@ffmpeg/libav": "^0.0.1-alpha.0",
-    "@ffmpeg/libav-core": "^0.0.1-alpha.0",
-    "@ffmpeg/libav-core-mt": "^0.0.1-alpha.0",
+    "@ffmpeg/libav-core": "^0.0.1-alpha.1",
+    "@ffmpeg/libav-core-mt": "^0.0.1-alpha.1",
     "ts-node": "^10.9.1"
   }
 }
