@@ -3,6 +3,7 @@
   "version": "0.0.1-alpha.1",
   "description": "libav WebAssembly port",
   "main": "dist/libav-core.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -24,5 +25,8 @@
   "homepage": "https://github.com/ffmpegwasm/libav.wasm#readme",
   "publishConfig": {
     "access": "public"
+  },
+  "dependencies": {
+    "@types/ffmpeg__libav-core": "^0.0.0"
   }
 }

@@ -1,12 +1,14 @@
-import { LibavCore } from "../../libav-type/index.d";
+import LibavCoreFactory from "ffmpeg__libav-core";
 
-let libav: LibavCore;
+type Libav = Awaited<ReturnType<typeof LibavCoreFactory>>;
 
-export const initLibav = (_libav: LibavCore) => {
+let libav: Libav;
+
+export const initLibav = (_libav: Libav) => {
   libav = _libav;
 };
 
-export const getLibav = () => {
+export const getLibav = (): Libav => {
   if (!libav) {
     console.error(
       "libav is not initialized, initLibav() should be called first!"

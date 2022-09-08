@@ -4,13 +4,21 @@ import { getLibav } from "./libav";
 export function openMedia(filename: string): IAVFormatContenxt | null {
   const {
     NULL,
+    // @ts-ignore
     _avformat_alloc_context,
+    // @ts-ignore
     _avformat_open_input,
+    // @ts-ignore
     _avformat_find_stream_info,
+    // @ts-ignore
     ref,
+    // @ts-ignore
     deref,
+    // @ts-ignore
     stringToPtr,
+    // @ts-ignore
     _free,
+    // @ts-ignore
     AVFormatContext,
   } = getLibav();
 

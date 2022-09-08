@@ -24,6 +24,7 @@
     "@ffmpeg/libav": "^0.0.1-alpha.0",
     "@ffmpeg/libav-core": "^0.0.1-alpha.1",
     "@ffmpeg/libav-core-mt": "^0.0.1-alpha.1",
+    "@types/ffmpeg__libav-core": "^0.0.0",
     "ts-node": "^10.9.1"
   }
 }
